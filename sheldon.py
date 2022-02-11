@@ -34,9 +34,9 @@ cam = PiCamera()
 cam.resolution = (1296,972) 
 
 
-# It checks if the image is a day-time picture or a night-time picture
-    # It uses a machine learning file created from "https://teachablemachine.withgoogle.com/" to check if the image is a day-time or a night-time picture
-    # It returns "True" if it's a day-time picture and "False" if it is a night-time one
+# check_img() checks if the image is a day-time picture or a night-time picture
+# It uses a machine learning file created from "https://teachablemachine.withgoogle.com/" to check if the image is a day-time or a night-time picture
+# It returns "True" if it's a day-time picture and "False" if it is a night-time one
 def check_img(image):
     image_file = img_folder/image
     interpreter = make_interpreter(f"{ml_file}")
@@ -57,13 +57,13 @@ def check_img(image):
         else:
             return False
 
-# It returns current time
+# get_time() returns current time
 def get_time():
     now = datetime.now()
     now = now.strftime("%d/%m/%Y %H:%M:%S")
     return now
 
-# It returns ISS coordinates
+# track_iss() returns ISS coordinates
 def track_iss():
     location = ISS.coordinates() 
     latitude = location.latitude.degrees
@@ -71,14 +71,14 @@ def track_iss():
     coordinates = [latitude, longitude]
     return coordinates
 
-# It converts angle coordinates into normal coordinates
+# convert() converts angle coordinates into normal coordinates
 # Example: "98° 34' 58.7" to "98/1,34/1,587/10"
 def convert(angle):
     sign, degrees, minutes, seconds = angle.signed_dms()
     exif_angle = f'{degrees:.0f}/1,{minutes:.0f}/1,{seconds*10:.0f}/10'
     return sign < 0, exif_angle
 
-# Getting ISS location
+# my_capture() captures an image
 def my_capture(camera, image):
     point = ISS.coordinates()
     south, exif_latitude = convert(point.latitude)
